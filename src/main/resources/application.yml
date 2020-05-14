@@ -1,0 +1,44 @@
+# Tomcat
+server:
+  port: 9999
+  servlet:
+    context-path: /dynamic
+
+spring:
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  mvc:
+    throw-exception-if-no-handler-found: true
+  datasource:
+#    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      stat-view-servlet:
+        enabled: true
+    dynamic:
+      p6spy: true
+      druid:
+        max-active: 5
+        filters: stat
+      datasource:
+        master:
+          username: postgres
+          password: postgres
+          url: jdbc:postgresql://127.0.0.1:5432/master
+          driver-class-name: org.postgresql.Driver
+
+# mybatis
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*.xml
+  configuration:
+    cache-enabled: false
+    call-setters-on-nulls: true
+    jdbc-type-for-null: 'null'
+    log-impl:
+  global-config:
+    banner: false
+    sql-parser-cache: false
+    db-config:
+      db-type: postgre_sql
+      id-type: AUTO
+      field-strategy: NOT_NULL

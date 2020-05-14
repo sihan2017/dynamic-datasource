@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sihan.dynamicdatasource.modules.admin.dao.TenantDao">
+
+    <update id="createTenantDatabase">
+        create database tenant_${id}
+    </update>
+    <update id="createTenantTable">
+        CREATE TABLE "public"."t_user" (
+            "id" int4 NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 ),
+            "username" VARCHAR ( 255 ) COLLATE "pg_catalog"."default",
+            CONSTRAINT "user_pkey" PRIMARY KEY ( "id" )
+        );
+        ALTER TABLE "public"."t_user" OWNER TO "postgres";
+        COMMENT ON COLUMN "public"."t_user"."id" IS '主键id';
+        COMMENT ON COLUMN "public"."t_user"."username" IS '用户名';
+        INSERT INTO "public"."t_user"("username") VALUES ('${dbName}');
+
+    </update>
+    <delete id="delTenant">
+        DROP DATABASE tenant_${id};
+    </delete>
+</mapper>
